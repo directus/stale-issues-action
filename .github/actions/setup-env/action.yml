@@ -1,0 +1,44 @@
+name: Setup env
+description: Setup the environment
+
+inputs:
+  build:
+    description: Run the build step
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: package.json
+
+    - uses: pnpm/action-setup@v4
+      name: Setup pnpm
+      id: pnpm-install
+      with:
+        run_install: false
+
+    - name: Get pnpm cache dir
+      id: pnpm-cache-dir
+      shell: bash
+      run: echo "pnpm-cache-dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache-dir.outputs.pnpm-cache-dir }}
+        key:
+          ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install
+
+    - name: Build
+      if: inputs.build == 'true'
+      shell: bash
+      run: pnpm run build

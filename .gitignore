@@ -1,0 +1,17 @@
+# User preferences
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Builds / Caches
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# IDEs / Editors
+.idea/
+*.code-workspace
+.history/
+*.sublime-settings
+.*.swp

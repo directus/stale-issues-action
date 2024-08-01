@@ -1,0 +1,35 @@
+name: Close Stale Issues
+description: Close issues certain days after a stale label has been added
+author: Directus
+
+branding:
+  icon: calendar
+  color: red
+
+inputs:
+  github-token:
+    required: true
+    description: GitHub token used for this action
+    default: ${{ github.token }}
+  github-repo:
+    required: true
+    description: GitHub repository used for this action
+    default: ${{ github.repository }}
+  stale-label:
+    required: true
+    description: Label which marks an issue as stale
+  days-before-close:
+    required: true
+    description: Days before an issue is closed after the stale label has been added it
+  close-comment:
+    description: Comment which will be added to issues when closing
+  dry-run:
+    description: Run the action without effectively closing stale issues
+
+outputs:
+  closed-issues:
+    description: List with numbers of all issues that have been closed
+
+runs:
+  using: node20
+  main: dist/index.js

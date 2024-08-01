@@ -1,0 +1,65 @@
+name: Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+
+      - name: Run linter
+        run: pnpm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+
+      - name: Run typecheck
+        run: pnpm run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env & build
+        uses: ./.github/actions/setup-env
+        with:
+          build: true
+
+      - name: Run action
+        id: action
+        uses: ./
+        with:
+          stale-label: stale
+          days-before-close: 7
+          dry-run: true
+
+      - name: Check output
+        run: |
+          echo 'closed-issues=${{ steps.action.outputs.closed-issues }}'
+          ${{ startsWith(steps.action.outputs.closed-issues, '[') }} || { echo '::error::Expected "closed-issues" output to start with ['; exit 1; }
+          ${{ endsWith(steps.action.outputs.closed-issues, ']') }} || { echo '::error::Expected "closed-issues" output to end with ]'; exit 1; }

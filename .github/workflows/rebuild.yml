@@ -1,0 +1,34 @@
+name: Rebuild
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    name: Rebuild
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env & build
+        uses: ./.github/actions/setup-env
+        with:
+          build: true
+
+      - name: Commit changes
+        run: |
+          author='${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+          message='Update build artifacts [skip ci]'
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git commit --all --author "$author" --message "$message" || true
+
+          git push

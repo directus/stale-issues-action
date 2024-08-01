@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: SemVer for the release, for example "1.0.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  check-version:
+    name: Check Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.release }}
+      major-version: ${{ steps.version.outputs.major }}
+      is-prerelease: ${{ steps.version.outputs.prerelease && true || false }}
+    steps:
+      - name: Check version
+        uses: madhead/semver-utils@v4
+        id: version
+        with:
+          version: ${{ inputs.version }}
+          lenient: false
+
+  create-version:
+    name: Create Version
+    runs-on: ubuntu-latest
+    needs: check-version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env & build
+        uses: ./.github/actions/setup-env
+        with:
+          build: true
+
+      - name: Update version in readme
+        run: |
+          version='${{ needs.check-version.outputs.major-version }}'
+          sed \
+            -i 's/\(<!-- version:start -->\).*\(<!-- version:end -->\)/\1'"$version"'\2/g' \
+            readme.md
+
+      - name: Create version commit & tags
+        run: |
+          author='${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+          version='v${{ needs.check-version.outputs.version }}'
+          majorVersion='v${{ needs.check-version.outputs.major-version }}'
+          branch='${{ github.ref }}'
+          isPrerelease='${{ needs.check-version.outputs.is-prerelease }}'
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git commit --all --author "$author" --message "$version" || true
+
+          git tag --annotate "$version" --message "$version"
+
+          git push --atomic origin "$branch" "$version"
+
+          if [ "$isPrerelease" = false ]; then
+            git tag --force --annotate "$majorVersion" --message "$majorVersion"
+            git push --force origin "$majorVersion"
+          fi
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs:
+      - check-version
+      - create-version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create \
+            'v${{ needs.check-version.outputs.version }}' \
+            --verify-tag \
+            --generate-notes \
+            ${{ needs.check-version.outputs.is-prerelease == 'true' && '--prerelease' || '' }}
