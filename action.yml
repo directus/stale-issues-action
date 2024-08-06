@@ -9,7 +9,7 @@ branding:
 inputs:
   github-token:
     required: true
-    description: GitHub token used for this action
+    description: GitHub token with read access and issue update access to github-repo
     default: ${{ github.token }}
   github-repo:
     required: true
