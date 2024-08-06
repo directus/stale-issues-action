@@ -35,10 +35,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup env & build
-        uses: ./.github/actions/setup-env
-        with:
-          build: true
+      - name: Setup env
+        uses: ./.github/actions/setup
+
+      - name: Build
+        run: pnpm run build
 
       - name: Update version in readme
         run: |

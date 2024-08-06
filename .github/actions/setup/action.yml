@@ -1,10 +1,5 @@
-name: Setup env
-description: Setup the environment
-
-inputs:
-  build:
-    description: Run the build step
-    required: false
+name: Setup
+description: Configure Node.js + pnpm and install dependencies
 
 runs:
   using: composite
@@ -37,8 +32,3 @@ runs:
     - name: Install dependencies
       shell: bash
       run: pnpm install
-
-    - name: Build
-      if: inputs.build == 'true'
-      shell: bash
-      run: pnpm run build

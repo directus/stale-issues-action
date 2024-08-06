@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup env
-        uses: ./.github/actions/setup-env
+        uses: ./.github/actions/setup
 
       - name: Run linter with autofix
         continue-on-error: true
