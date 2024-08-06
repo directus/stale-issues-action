@@ -25,6 +25,7 @@ inputs:
     description: Comment which will be added to issues when closing
   dry-run:
     description: Run the action without effectively closing stale issues
+    default: false
 
 outputs:
   closed-issues:
