@@ -7,7 +7,7 @@ export interface Config {
 	ownerRepo: { owner: string; repo: string };
 	staleLabel: string;
 	daysBeforeClose: number;
-	closeMessage: string | null;
+	closeMessage: string;
 	dryRun: boolean;
 }
 
@@ -52,7 +52,7 @@ export async function getConfig(): Promise<Config> {
 		throw new TypeError('"days-before-close" must be a number');
 	}
 
-	const closeMessage = core.getInput('close-message') || null;
+	const closeMessage = core.getInput('close-message');
 
 	return {
 		octokit,

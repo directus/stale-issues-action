@@ -13,19 +13,20 @@ inputs:
     default: ${{ github.token }}
   github-repo:
     required: true
-    description: GitHub `author/repository` for which stale issues are paused
+    description: GitHub `owner/repository` for which stale issues are paused
     default: ${{ github.repository }}
   stale-label:
     required: true
     description: Label which marks an issue as stale
   days-before-close:
     required: true
-    description: Days before an issue is closed after the stale label has been added it
+    description: Days before an issue is closed after the stale label has been added to it
   close-comment:
+    required: true
     description: Comment which will be added to issues when closing
   dry-run:
     description: Run the action without effectively closing stale issues
-    default: false
+    default: 'false'
 
 outputs:
   closed-issues:
