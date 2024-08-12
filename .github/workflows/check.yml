@@ -36,8 +36,22 @@ jobs:
       - name: Run typecheck
         run: pnpm run typecheck
 
-  test:
-    name: Test
+  test-unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env
+        uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: pnpm test
+
+  test-action:
+    name: Action Test
     runs-on: ubuntu-latest
     permissions:
       issues: read

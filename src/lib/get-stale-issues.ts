@@ -8,7 +8,7 @@ import type { Config } from './get-config.js';
 dayjs.extend(isSameOrBefore);
 dayjs.extend(relativeTime);
 
-interface IssuesResponse {
+export interface IssuesResponse {
 	repository: {
 		issues: {
 			totalCount: number;
@@ -22,7 +22,7 @@ interface IssuesResponse {
 	};
 }
 
-interface LabeledEventsResponse {
+export interface LabeledEventsResponse {
 	node: {
 		timelineItems: {
 			nodes: {
