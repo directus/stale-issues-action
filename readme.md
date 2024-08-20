@@ -18,7 +18,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: directus/stale-issues-action@v<!-- version:start -->0<!-- version:end -->
+      - uses: directus/stale-issues-action@v<!-- version:start -->1<!-- version:end -->
         with:
           stale-label: stale
           days-before-close: 7
