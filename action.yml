@@ -21,9 +21,9 @@ inputs:
   days-before-close:
     required: true
     description: Days before an issue is closed after the stale label has been added to it
-  close-comment:
+  close-message:
     required: true
-    description: Comment which will be added to issues when closing
+    description: Message which will be added to issues when closing
   dry-run:
     description: Run the action without effectively closing stale issues
     default: 'false'
