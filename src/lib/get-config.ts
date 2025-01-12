@@ -1,6 +1,6 @@
-import github from '@actions/github';
 import type { GitHub } from '@actions/github/lib/utils.js';
 import core from '@actions/core';
+import github from '@actions/github';
 
 export interface Config {
 	octokit: InstanceType<typeof GitHub>;

@@ -1,7 +1,6 @@
 import core from '@actions/core';
 import github from '@actions/github';
 import { beforeEach, expect, it, vi } from 'vitest';
-
 import { type Config, getConfig } from './get-config.js';
 
 vi.mock('@actions/github');

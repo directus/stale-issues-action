@@ -1,9 +1,8 @@
+import type { Config } from './get-config.js';
+import core from '@actions/core';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
-import core from '@actions/core';
-
-import type { Config } from './get-config.js';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(relativeTime);

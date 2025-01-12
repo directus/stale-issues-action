@@ -1,8 +1,7 @@
+import type { Config } from './get-config.js';
 import core from '@actions/core';
 import { afterEach, beforeAll, expect, it, vi } from 'vitest';
-
-import type { Config } from './get-config.js';
-import { type IssuesResponse, type LabeledEventsResponse, getStaleIssues } from './get-stale-issues.js';
+import { getStaleIssues, type IssuesResponse, type LabeledEventsResponse } from './get-stale-issues.js';
 
 const mockOctokit = {
 	graphql: vi.fn(),
