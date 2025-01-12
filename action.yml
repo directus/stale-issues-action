@@ -1,7 +1,6 @@
 name: Close Stale Issues
 description: Close issues certain days after a stale label has been added
 author: Directus
-
 branding:
   icon: calendar
   color: red
@@ -9,7 +8,7 @@ branding:
 inputs:
   github-token:
     required: true
-    description: GitHub token with read access and issue update access to github-repo
+    description: GitHub token with read and issue update access to github-repo
     default: ${{ github.token }}
   github-repo:
     required: true
@@ -23,7 +22,7 @@ inputs:
     description: Days before an issue is closed after the stale label has been added to it
   close-message:
     required: true
-    description: Message which will be added to issues when closing
+    description: Message on the staled issues when closing
   dry-run:
     description: Run the action without effectively closing stale issues
     default: 'false'

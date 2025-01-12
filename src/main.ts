@@ -1,8 +1,7 @@
 import core from '@actions/core';
-
-import { getStaleIssues } from './lib/get-stale-issues.js';
 import { closeIssue } from './lib/close-issue.js';
 import { getConfig } from './lib/get-config.js';
+import { getStaleIssues } from './lib/get-stale-issues.js';
 
 export async function main() {
 	try {

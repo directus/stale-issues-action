@@ -1,7 +1,6 @@
-import core from '@actions/core';
-
 import type { Config } from './get-config.js';
 import type { Issue } from './get-stale-issues.js';
+import core from '@actions/core';
 
 export async function closeIssue({ dryRun, octokit, ownerRepo, closeMessage }: Config, { number, url, staleSince }: Issue) {
 	if (dryRun) {

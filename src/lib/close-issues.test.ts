@@ -1,8 +1,7 @@
-import { afterEach, expect, it, vi } from 'vitest';
-import core from '@actions/core';
-
 import type { Config } from './get-config.js';
 import type { Issue } from './get-stale-issues.js';
+import core from '@actions/core';
+import { afterEach, expect, it, vi } from 'vitest';
 import { closeIssue } from './close-issue.js';
 
 const mockOctokit = {
