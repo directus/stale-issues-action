@@ -1,8 +1,10 @@
+import type { Config } from './lib/get-config.js';
+import type { Issue } from './lib/get-stale-issues.js';
 import core from '@actions/core';
 import { expect, it, vi } from 'vitest';
 import { closeIssue } from './lib/close-issue.js';
-import { type Config, getConfig } from './lib/get-config.js';
-import { getStaleIssues, type Issue } from './lib/get-stale-issues.js';
+import { getConfig } from './lib/get-config.js';
+import { getStaleIssues } from './lib/get-stale-issues.js';
 import { main } from './main.js';
 
 vi.mock('./lib/get-config.js');
