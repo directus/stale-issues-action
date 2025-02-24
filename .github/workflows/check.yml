@@ -79,3 +79,29 @@ jobs:
           echo 'closed-issues=${{ steps.action.outputs.closed-issues }}'
           ${{ startsWith(steps.action.outputs.closed-issues, '[') }} || { echo '::error::Expected "closed-issues" output to start with ['; exit 1; }
           ${{ endsWith(steps.action.outputs.closed-issues, ']') }} || { echo '::error::Expected "closed-issues" output to end with ]'; exit 1; }
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup env
+        uses: ./.github/actions/setup
+
+      - name: Build
+        run: pnpm run bundle
+
+      - name: Compare dist
+        run: |
+          if [ ! -d dist/ ]; then
+            echo "Expected dist/ directory does not exist. See status below:"
+            ls -la ./
+            exit 1
+          fi
+          if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff --ignore-space-at-eol --text dist/
+            exit 1
+          fi
