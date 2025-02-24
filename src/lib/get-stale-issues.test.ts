@@ -1,7 +1,8 @@
 import type { Config } from './get-config.js';
+import type { IssuesResponse, LabeledEventsResponse } from './get-stale-issues.js';
 import core from '@actions/core';
 import { afterEach, beforeAll, expect, it, vi } from 'vitest';
-import { getStaleIssues, type IssuesResponse, type LabeledEventsResponse } from './get-stale-issues.js';
+import { getStaleIssues } from './get-stale-issues.js';
 
 const mockOctokit = {
 	graphql: vi.fn(),
@@ -173,7 +174,7 @@ it('does not return labeled issues which are not yet stale', async () => {
 	await issues.next();
 
 	expect(infoSpy).toBeCalledWith('Found 1 issue with stale label');
-	expect(infoSpy).toBeCalledWith(`Issue #1 (https://github.com/directus/stale-issues-action/issues/1) is not yet stale, will become stale in 3 days`);
+	expect(infoSpy).toBeCalledWith('Issue #1 (https://github.com/directus/stale-issues-action/issues/1) is not yet stale, will become stale in 3 days');
 });
 
 it('aborts early if creation date of issues is younger than stale date', async () => {
